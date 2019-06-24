@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <title>Dave's Tic Tac Toe</title>
+        <link rel="icon" href="/icon.png">
+
+        <!-- Make it a PWA -->
+        <link rel="manifest" href="/manifest.json">
+
+        <!-- iOS PWA compatibility-->
+        <meta name="apple-mobile-web-app-capable" content="yes">
+        <meta name="apple-mobile-web-app-status-bar-style" content="black">
+        <meta name="apple-mobile-web-app-title" content="Hello PWA">
+        <link rel="apple-touch-icon" href="/icon.png">
+
+        <!-- Mobile Viewing -->
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <!-- More PWA Config-->
+        <meta name="description" content="A starter project for progressive web apps.">
+        <meta name="theme-color" content="#2F3BA2" />
+
+        <script>
+            // Register a service worker
+            if ('serviceWorker' in navigator) {
+                window.addEventListener('load', () => {
+                    navigator.serviceWorker.register('/service-worker.js')
+                    .then((reg) => {
+                        console.log('Service worker registered.', reg);
+                    });
+                });
+            }
+        </script>
+
+        <link rel="stylesheet" href="/styles.css">
+    </head>
+    <body>
+        <header>
+            <h1>Dave's Tic Tac Toe</h1>
+        </header>
+        <main class="gameboard">
+            <strong class="message"></strong>
+           
+            <div class="cell-wrapper">
+                <button class="cell" data-x-coordinate="0" data-y-coordinate="0"></button>
+                <button class="cell" data-x-coordinate="1" data-y-coordinate="0"></button>
+                <button class="cell" data-x-coordinate="2" data-y-coordinate="0"></button>
+
+                <button class="cell" data-x-coordinate="0" data-y-coordinate="1"></button>
+                <button class="cell" data-x-coordinate="1" data-y-coordinate="1"></button>
+                <button class="cell" data-x-coordinate="2" data-y-coordinate="1"></button>
+                
+                <button class="cell" data-x-coordinate="0" data-y-coordinate="2"></button>
+                <button class="cell" data-x-coordinate="1" data-y-coordinate="2"></button>
+                <button class="cell" data-x-coordinate="2" data-y-coordinate="2"></button>
+            </div>
+
+            <button class="reset">Reset</button>
+        </main>
+
+        <script type="module">
+            import TicTacToe from '/TicTacToe.js'
+            
+            // watch for winner
+            var game = new Proxy(new TicTacToe(), {
+                set(obj, prop, value) {
+                    if (prop === 'hasWinner') {
+                        document.querySelector('.message').textContent = value ? `${TicTacToe.PLAYER_MARK[game.playersTurn]} is the winner!` : ''
+                    }
+                    obj[prop] = value
+                    return true
+                }
+            })
+
+            // Add event listeners
+            let cells = [...document.querySelectorAll('.cell')]
+            cells.forEach((cell) => {
+                cell.addEventListener('click', game.handleMark.bind(game))
+            })
+
+            document.querySelector('.reset').addEventListener('click', () => {
+                game.hasWinner = false
+                game.GAME_BOARD = [
+                    [[-1], [-1], [-1]],
+                    [[-1], [-1], [-1]],
+                    [[-1], [-1], [-1]]
+                ]
+                game.playersTurn = TicTacToe.PLAYER.X
+                cells.forEach((cell) => {
+                    cell.textContent = ''
+                })
+            })
+        </script>
+    </body>
+</html>
