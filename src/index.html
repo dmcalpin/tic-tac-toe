@@ -40,20 +40,20 @@
             <h1>Dave's Tic Tac Toe</h1>
         </header>
         <main class="gameboard">
-            <strong class="message"></strong>
+            <strong class="message" aria-live="polite"></strong>
            
             <div class="cell-wrapper">
-                <button class="cell" data-x-coordinate="0" data-y-coordinate="0"></button>
-                <button class="cell" data-x-coordinate="1" data-y-coordinate="0"></button>
-                <button class="cell" data-x-coordinate="2" data-y-coordinate="0"></button>
+                <button class="cell" data-x-coordinate="0" data-y-coordinate="0" data-index="0"></button>
+                <button class="cell" data-x-coordinate="1" data-y-coordinate="0" data-index="1"></button>
+                <button class="cell" data-x-coordinate="2" data-y-coordinate="0" data-index="2"></button>
 
-                <button class="cell" data-x-coordinate="0" data-y-coordinate="1"></button>
-                <button class="cell" data-x-coordinate="1" data-y-coordinate="1"></button>
-                <button class="cell" data-x-coordinate="2" data-y-coordinate="1"></button>
+                <button class="cell" data-x-coordinate="0" data-y-coordinate="1" data-index="3"></button>
+                <button class="cell" data-x-coordinate="1" data-y-coordinate="1" data-index="4"></button>
+                <button class="cell" data-x-coordinate="2" data-y-coordinate="1" data-index="5"></button>
                 
-                <button class="cell" data-x-coordinate="0" data-y-coordinate="2"></button>
-                <button class="cell" data-x-coordinate="1" data-y-coordinate="2"></button>
-                <button class="cell" data-x-coordinate="2" data-y-coordinate="2"></button>
+                <button class="cell" data-x-coordinate="0" data-y-coordinate="2" data-index="6"></button>
+                <button class="cell" data-x-coordinate="1" data-y-coordinate="2" data-index="7"></button>
+                <button class="cell" data-x-coordinate="2" data-y-coordinate="2" data-index="8"></button>
             </div>
 
             <button class="reset">New Game</button>
@@ -62,34 +62,10 @@
         <script type="module">
             import TicTacToe from '/TicTacToe.js'
             
-            // watch for winner
-            var game = new Proxy(new TicTacToe(), {
-                set(obj, prop, value) {
-                    if (prop === 'hasWinner') {
-                        document.querySelector('.message').textContent = value ? `${TicTacToe.PLAYER_MARK[game.playersTurn]} is the winner!` : ''
-                    }
-                    obj[prop] = value
-                    return true
-                }
-            })
-
-            // Add event listeners
-            let cells = [...document.querySelectorAll('.cell')]
-            cells.forEach((cell) => {
-                cell.addEventListener('click', game.handleMark.bind(game))
-            })
-
-            document.querySelector('.reset').addEventListener('click', () => {
-                game.hasWinner = false
-                game.GAME_BOARD = [
-                    [[-1], [-1], [-1]],
-                    [[-1], [-1], [-1]],
-                    [[-1], [-1], [-1]]
-                ]
-                game.playersTurn = TicTacToe.PLAYER.X
-                cells.forEach((cell) => {
-                    cell.textContent = ''
-                })
+            let game = new TicTacToe({
+                cells: document.querySelectorAll('.cell'),
+                message: document.querySelector('.message'),
+                reset: document.querySelector('.reset')
             })
         </script>
     </body>
