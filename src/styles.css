@@ -5,6 +5,10 @@ body  {
     padding: 0;
     margin: 0;
 }
+button {
+    border-image: none;
+    background-color: #fff;
+}
 @supports (display: grid) {
     .gameboard {
         height: 75vh;
@@ -54,6 +58,12 @@ header {
     max-width: 75vh;
     margin: 0 auto;
 }
+.message:not(:empty) {
+    background-color: #d8a0a0;
+    border: 1px solid #cc2f2f;
+    line-height: 25px;
+    padding: 0 10px;
+}
 .gameboard {
     max-width: 75vh;
     margin: 0 auto;
@@ -69,4 +79,7 @@ header {
 .cell-wrapper .cell:hover,
 .cell-wrapper .cell:focus {
     background-color: #666;
+}
+.reset {
+    font-size: 1.5rem;
 }
