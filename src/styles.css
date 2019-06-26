@@ -57,6 +57,7 @@ button {
 header {
     max-width: 75vh;
     margin: 0 auto;
+    overflow: hidden;
 }
 .message:not(:empty) {
     background-color: #d8a0a0;
@@ -75,6 +76,11 @@ header {
     background-color: #333;
     color: #fff;
     transition: all .5s;
+}
+@media screen and (min-width: 800px){
+    .cell-wrapper .cell {
+        font-size: 13vh;
+    }
 }
 .cell-wrapper .cell:hover,
 .cell-wrapper .cell:focus {

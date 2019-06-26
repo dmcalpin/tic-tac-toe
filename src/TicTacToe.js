@@ -38,10 +38,17 @@ export default class TicTacToe {
         // Event Listeners, bind `this` otherwise it would refer to the element
         this.cells.forEach((cell) => {
             cell.addEventListener('click', this.handleMark.bind(this))
-            cell.addEventListener('keyup', this.handleNavigate.bind(this))
+            // Note: keydown is used here instead of keyup to trigger
+            // the navigation before the default 'tab' event
+            cell.addEventListener('keydown', this.handleNavigate.bind(this))
         })
 
-        this.reset.addEventListener('click', this.resetBoard.bind(this))     
+        this.reset.addEventListener('click', this.resetBoard.bind(this))
+        this.reset.addEventListener('keyup', (evt) => {
+            if(evt.keyCode === 38){ // up key
+                this.cells[8].focus() 
+            }
+        })     
     }
    
     
@@ -74,8 +81,6 @@ export default class TicTacToe {
         })
         this.playersTurn = TicTacToe.PLAYER.X
         this.message.textContent = ''
-
-        this.cells[0].focus()
     }
 
     // Click Handler for placing a mark
@@ -103,30 +108,36 @@ export default class TicTacToe {
     }
 
     // Keyboard accessibility with arrows
-    handleNavigate(evt){
-        evt.preventDefault()
+    handleNavigate (evt) {
+        evt.preventDefault();
         let currIndex = Number(evt.target.dataset.index)
-        switch(evt.keyCode){
+        switch (evt.keyCode) {
             case 38: // up
-                if(currIndex >= 3){
+                if (currIndex >= 3) {
                     this.cells[currIndex - 3].focus()
                 }
                 break;
             case 40: // down
-                if(currIndex < 6){
+                if (currIndex < 6) {
                     this.cells[currIndex + 3].focus()
+                } else {
+                    this.reset.focus()
                 }
                 break;
             case 37: // left
-                if(currIndex % 3 !== 0){
+                if (currIndex % 3 !== 0) {
                     this.cells[currIndex - 1].focus()
                 }
                 break;
             case 39: // right
-                if(currIndex % 3 !== 2){
+                if (currIndex % 3 !== 2) {
                     this.cells[currIndex + 1].focus()
                 }
                 break;
+            case 9: // tab
+                if (!evt.shiftKey) {
+                    this.reset.focus()
+                }
             default:
                 break;
         }
