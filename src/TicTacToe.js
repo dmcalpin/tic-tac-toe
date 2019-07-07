@@ -12,29 +12,9 @@ export default class TicTacToe {
         this.PLAYER = { X: 1, O: 2 }
         this.PLAYER_MARK = {1: 'X', 2: 'O'}
         this.GAME_BOARD = [
-            [[-1], [-1], [-1]],
-            [[-1], [-1], [-1]],
-            [[-1], [-1], [-1]]
-        ]
-
-        /*
-        The algorithm to determine a winner is to add the possible winning directions
-        together, if they add up to 3 "X" wins, if they add up to 6 "O" wins
-        */
-        this.MARK_SET = [
-            // Horizontal win
-            () => this.GAME_BOARD[0][0] + this.GAME_BOARD[0][1] + this.GAME_BOARD[0][2],
-            () => this.GAME_BOARD[1][0] + this.GAME_BOARD[1][1] + this.GAME_BOARD[1][2],
-            () => this.GAME_BOARD[2][0] + this.GAME_BOARD[2][1] + this.GAME_BOARD[2][2],
-
-            // Vertical win
-            () => this.GAME_BOARD[0][0] + this.GAME_BOARD[1][0] + this.GAME_BOARD[2][0],
-            () => this.GAME_BOARD[0][1] + this.GAME_BOARD[1][1] + this.GAME_BOARD[2][1],
-            () => this.GAME_BOARD[0][2] + this.GAME_BOARD[1][2] + this.GAME_BOARD[2][2],
-
-            // Diagonal win
-            () => this.GAME_BOARD[0][0] + this.GAME_BOARD[1][1] + this.GAME_BOARD[2][2],
-            () => this.GAME_BOARD[2][0] + this.GAME_BOARD[1][1] + this.GAME_BOARD[0][2]
+            Array(3),
+            Array(3),
+            Array(3)
         ]
 
         this.hasWinner = false
@@ -66,24 +46,51 @@ export default class TicTacToe {
     // 3 in a column across 3 possible columns
     // 3 in a row diagonally 2 ways
     checkWinner(){
-        this.MARK_SET.forEach((group) => {
-            let score = group.bind(this)()
-            if (score === 3 || score === 6) {
-                this.hasWinner = this.playersTurn
+        // Check Each Row and Column
+        for(let i=0; i<this.GAME_BOARD.length; i++){
+            let rowSequence = ''
+            let colSequence = ''
+            
+            for(let j=0; j<this.GAME_BOARD[i].length; j++){
+                rowSequence += this.GAME_BOARD[i][j]
+                colSequence += this.GAME_BOARD[j][i]
             }
-        })
+            if (rowSequence === this.winPattern() || colSequence === this.winPattern()) {
+                this.hasWinner = true
+                break
+            }
+        }
+
+        // check the diagonals
+        let topToBotDiag = ''
+        let botToTopDiag = ''
+        for(let i=0; i<this.GAME_BOARD.length; i++){
+            topToBotDiag += this.GAME_BOARD[i][i]
+            botToTopDiag += this.GAME_BOARD[2 - i][i]
+            
+            if (topToBotDiag === this.winPattern() || botToTopDiag === this.winPattern()) {
+                this.hasWinner = true
+                break
+            }
+        }
     }
 
-    makeMark(player, location){
-        this.GAME_BOARD[location.X][location.Y] = player
+    makeMark(playerTurn, location){
+        this.GAME_BOARD[location.Y][location.X] = this.PLAYER_MARK[playerTurn]
+    }
+
+    winPattern(){
+        // add 1 because technically the array is joined by the delimiter,
+        // so we need one more element
+        return Array(this.GAME_BOARD.length + 1).join(this.PLAYER_MARK[this.playersTurn])
     }
 
     resetBoard(evt){
         this.hasWinner = false
         this.GAME_BOARD = [
-            [[-1], [-1], [-1]],
-            [[-1], [-1], [-1]],
-            [[-1], [-1], [-1]]
+            Array(3),
+            Array(3),
+            Array(3)
         ]
         this.cells.forEach((cell) => {
             cell.textContent = ''
