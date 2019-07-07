@@ -38,7 +38,7 @@ export default class TicTacToe {
         // Event Listeners, bind `this` otherwise it would refer to the element
         this.cells.forEach((cell) => {
             cell.addEventListener('click', this.handleMark.bind(this))
-            cell.addEventListener('keyup', this.handleMark.bind(this))
+
             // Note: keydown is used here instead of keyup to trigger
             // the navigation before the default 'tab' event
             cell.addEventListener('keydown', this.handleNavigate.bind(this))
