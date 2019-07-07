@@ -1,36 +1,36 @@
 export default class TicTacToe {
-    static PLAYER = { X: 1, O: 2 }
-    static PLAYER_MARK = {1: 'X', 2: 'O'}
-    
-    GAME_BOARD = [
-        [[-1], [-1], [-1]],
-        [[-1], [-1], [-1]],
-        [[-1], [-1], [-1]]
-    ]
-
-    /*
-    The algorithm to determine a winner is to add the possible winning directions
-    together, if they add up to 3 "X" wins, if they add up to 6 "O" wins
-    */
-    MARK_SET = [
-        // Horizontal win
-        () => this.GAME_BOARD[0][0] + this.GAME_BOARD[0][1] + this.GAME_BOARD[0][2],
-        () => this.GAME_BOARD[1][0] + this.GAME_BOARD[1][1] + this.GAME_BOARD[1][2],
-        () => this.GAME_BOARD[2][0] + this.GAME_BOARD[2][1] + this.GAME_BOARD[2][2],
-
-        // Vertical win
-        () => this.GAME_BOARD[0][0] + this.GAME_BOARD[1][0] + this.GAME_BOARD[2][0],
-        () => this.GAME_BOARD[0][1] + this.GAME_BOARD[1][1] + this.GAME_BOARD[2][1],
-        () => this.GAME_BOARD[0][2] + this.GAME_BOARD[1][2] + this.GAME_BOARD[2][2],
-
-        // Diagonal win
-        () => this.GAME_BOARD[0][0] + this.GAME_BOARD[1][1] + this.GAME_BOARD[2][2],
-        () => this.GAME_BOARD[2][0] + this.GAME_BOARD[1][1] + this.GAME_BOARD[0][2]
-    ]
-
     constructor(config){
+        this.PLAYER = { X: 1, O: 2 }
+        this.PLAYER_MARK = {1: 'X', 2: 'O'}
+
+        this.GAME_BOARD = [
+            [[-1], [-1], [-1]],
+            [[-1], [-1], [-1]],
+            [[-1], [-1], [-1]]
+        ]
+
+        /*
+        The algorithm to determine a winner is to add the possible winning directions
+        together, if they add up to 3 "X" wins, if they add up to 6 "O" wins
+        */
+        this.MARK_SET = [
+            // Horizontal win
+            () => this.GAME_BOARD[0][0] + this.GAME_BOARD[0][1] + this.GAME_BOARD[0][2],
+            () => this.GAME_BOARD[1][0] + this.GAME_BOARD[1][1] + this.GAME_BOARD[1][2],
+            () => this.GAME_BOARD[2][0] + this.GAME_BOARD[2][1] + this.GAME_BOARD[2][2],
+
+            // Vertical win
+            () => this.GAME_BOARD[0][0] + this.GAME_BOARD[1][0] + this.GAME_BOARD[2][0],
+            () => this.GAME_BOARD[0][1] + this.GAME_BOARD[1][1] + this.GAME_BOARD[2][1],
+            () => this.GAME_BOARD[0][2] + this.GAME_BOARD[1][2] + this.GAME_BOARD[2][2],
+
+            // Diagonal win
+            () => this.GAME_BOARD[0][0] + this.GAME_BOARD[1][1] + this.GAME_BOARD[2][2],
+            () => this.GAME_BOARD[2][0] + this.GAME_BOARD[1][1] + this.GAME_BOARD[0][2]
+        ]
+
         this.hasWinner = false
-        this.playersTurn = TicTacToe.PLAYER.X
+        this.playersTurn = this.PLAYER.X
         this.cells = [...config.cells]
         this.message = config.message
         this.reset = config.reset
@@ -38,6 +38,7 @@ export default class TicTacToe {
         // Event Listeners, bind `this` otherwise it would refer to the element
         this.cells.forEach((cell) => {
             cell.addEventListener('click', this.handleMark.bind(this))
+            cell.addEventListener('keyup', this.handleMark.bind(this))
             // Note: keydown is used here instead of keyup to trigger
             // the navigation before the default 'tab' event
             cell.addEventListener('keydown', this.handleNavigate.bind(this))
@@ -56,7 +57,7 @@ export default class TicTacToe {
     // 3 in a row across 3 possible rows
     // 3 in a column across 3 possible columns
     // 3 in a row diagonally 2 ways
-    checkWinner(gameBoard){
+    checkWinner(){
         this.MARK_SET.forEach((group) => {
             let score = group.bind(this)()
             if (score === 3 || score === 6) {
@@ -79,7 +80,7 @@ export default class TicTacToe {
         this.cells.forEach((cell) => {
             cell.textContent = ''
         })
-        this.playersTurn = TicTacToe.PLAYER.X
+        this.playersTurn = this.PLAYER.X
         this.message.textContent = ''
     }
 
@@ -94,22 +95,24 @@ export default class TicTacToe {
             })
 
             // update the UI
-            evt.target.textContent = TicTacToe.PLAYER_MARK[this.playersTurn]
+            evt.target.textContent = this.PLAYER_MARK[this.playersTurn]
 
             this.checkWinner(this.GAME_BOARD)
 
             if (this.hasWinner) {
-                this.message.textContent = `${TicTacToe.PLAYER_MARK[this.playersTurn]} is the winner!`
+                this.message.textContent = `${this.PLAYER_MARK[this.playersTurn]} is the winner!`
             }
 
             // Switch Turns
-            this.playersTurn = this.playersTurn === TicTacToe.PLAYER.X ? TicTacToe.PLAYER.O : TicTacToe.PLAYER.X
+            this.playersTurn = this.playersTurn === this.PLAYER.X ? this.PLAYER.O : this.PLAYER.X
         }
     }
 
     // Keyboard accessibility with arrows
     handleNavigate (evt) {
-        evt.preventDefault();
+        if(evt.keyCode !== 13){ // enter key
+            evt.preventDefault();
+        }
         let currIndex = Number(evt.target.dataset.index)
         switch (evt.keyCode) {
             case 38: // up
