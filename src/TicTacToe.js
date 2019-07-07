@@ -1,8 +1,16 @@
+const KEYS = {
+    UP: 38,
+    DOWN: 40,
+    LEFT: 37,
+    RIGHT: 39,
+    TAB: 9,
+    ENTER: 13
+}
+
 export default class TicTacToe {
     constructor(config){
         this.PLAYER = { X: 1, O: 2 }
         this.PLAYER_MARK = {1: 'X', 2: 'O'}
-
         this.GAME_BOARD = [
             [[-1], [-1], [-1]],
             [[-1], [-1], [-1]],
@@ -46,7 +54,7 @@ export default class TicTacToe {
 
         this.reset.addEventListener('click', this.resetBoard.bind(this))
         this.reset.addEventListener('keyup', (evt) => {
-            if(evt.keyCode === 38){ // up key
+            if(evt.keyCode === KEYS.UP){
                 this.cells[8].focus() 
             }
         })     
@@ -110,34 +118,34 @@ export default class TicTacToe {
 
     // Keyboard accessibility with arrows
     handleNavigate (evt) {
-        if(evt.keyCode !== 13){ // enter key
+        if(evt.keyCode !== KEYS.ENTER){
             evt.preventDefault();
         }
         let currIndex = Number(evt.target.dataset.index)
         switch (evt.keyCode) {
-            case 38: // up
+            case KEYS.UP:
                 if (currIndex >= 3) {
                     this.cells[currIndex - 3].focus()
                 }
                 break;
-            case 40: // down
+            case KEYS.DOWN:
                 if (currIndex < 6) {
                     this.cells[currIndex + 3].focus()
                 } else {
                     this.reset.focus()
                 }
                 break;
-            case 37: // left
+            case KEYS.LEFT:
                 if (currIndex % 3 !== 0) {
                     this.cells[currIndex - 1].focus()
                 }
                 break;
-            case 39: // right
+            case KEYS.RIGHT:
                 if (currIndex % 3 !== 2) {
                     this.cells[currIndex + 1].focus()
                 }
                 break;
-            case 9: // tab
+            case KEYS.TAB:
                 if (!evt.shiftKey) {
                     this.reset.focus()
                 }
