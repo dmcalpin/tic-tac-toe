@@ -3,16 +3,16 @@
     <head>
         <meta charset="utf-8">
         <title>Dave's Tic Tac Toe</title>
-        <link rel="icon" href="/icon_512.png">
+        <link rel="icon" href="icon_512.png">
 
         <!-- Make it a PWA -->
-        <link rel="manifest" href="/manifest.json">
+        <link rel="manifest" href="manifest.json">
 
         <!-- iOS PWA compatibility-->
         <meta name="apple-mobile-web-app-capable" content="yes">
         <meta name="apple-mobile-web-app-status-bar-style" content="black">
         <meta name="apple-mobile-web-app-title" content="Hello PWA">
-        <link rel="apple-touch-icon" href="/icon_512.png">
+        <link rel="apple-touch-icon" href="icon_512.png">
 
         <!-- Mobile Viewing -->
         <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -33,7 +33,7 @@
             }
         </script>
 
-        <link rel="stylesheet" href="/styles.css">
+        <link rel="stylesheet" href="styles.css">
     </head>
     <body>
         <header>
@@ -60,7 +60,7 @@
         </main>
 
         <script type="module">
-            import TicTacToe from '/TicTacToe.js'
+            import TicTacToe from './TicTacToe.js'
             
             let game = new TicTacToe({
                 cells: document.querySelectorAll('.cell'),
