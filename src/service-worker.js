@@ -6,10 +6,10 @@
 const CACHE_NAME = 'static-cache-v1';
 
 const FILES_TO_CACHE = [
-    '/styles.css',
-    '/TicTacToe.js',
-    '/icon_192.png',
-    '/icon_512.png'
+    './styles.css',
+    './TicTacToe.js',
+    './icon_192.png',
+    './icon_512.png'
 ];
 
 // 1st Step in service worker lifecycle
@@ -52,18 +52,14 @@ self.addEventListener('activate', (evt) => {
 self.addEventListener('fetch', (evt) => {
     console.log('[ServiceWorker] Fetch', evt.request.url);
 
-    if (evt.request.mode !== 'navigate') {
-        // Not a page navigation, bail.
-        return;
-    }
-
     // Prevents browsers default handling of fetch so we can control it ourselves
     evt.respondWith(
         fetch(evt.request)
         .catch(() => {
             return caches.open(CACHE_NAME)
             .then((cache) => {
-                return cache.match('index.html');
+                // return any of the cached assets
+                return cache.match(evt.request.url.split('/').pop());
             });
         })
     );
