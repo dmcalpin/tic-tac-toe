@@ -72,14 +72,17 @@ header {
     
 }
 .cell-wrapper .cell {
-    font-size: 15vw;
+    font-size: 15vh;
+    line-height: 15vh;
     background-color: #333;
     color: #fff;
     transition: all .5s;
+    padding: 0;
 }
 @media screen and (min-width: 800px){
     .cell-wrapper .cell {
         font-size: 13vh;
+        line-height: 13vh;
     }
 }
 .cell-wrapper .cell:hover,

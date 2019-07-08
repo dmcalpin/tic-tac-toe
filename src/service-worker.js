@@ -6,9 +6,10 @@
 const CACHE_NAME = 'static-cache-v1';
 
 const FILES_TO_CACHE = [
-    '/offline.html',
     '/styles.css',
-    '/TicTacToe.js'
+    '/TicTacToe.js',
+    '/icon_192.png',
+    '/icon_512.png'
 ];
 
 // 1st Step in service worker lifecycle
@@ -62,7 +63,7 @@ self.addEventListener('fetch', (evt) => {
         .catch(() => {
             return caches.open(CACHE_NAME)
             .then((cache) => {
-                return cache.match('offline.html');
+                return cache.match('index.html');
             });
         })
     );
