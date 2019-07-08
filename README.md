@@ -1,5 +1,2 @@
-# Run with
-http-server src -S -C cert.pem -o
-
-# Generate SSL Cert
-`openssl req -newkey rsa:2048 -new -nodes -x509 -days 3650 -keyout key.pem -out cert.pem`
+# Tic Tac Toe
+A simple tic tac toe game built as a Progressive Web App (PWA)
