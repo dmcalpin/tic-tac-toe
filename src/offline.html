@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <title>Dave's Tic Tac Toe</title>
+        <link rel="icon" href="icon_512.png">
+
+        <!-- Make it a PWA -->
+        <link rel="manifest" href="manifest.json">
+
+        <!-- iOS PWA compatibility-->
+        <meta name="apple-mobile-web-app-capable" content="yes">
+        <meta name="apple-mobile-web-app-status-bar-style" content="black">
+        <meta name="apple-mobile-web-app-title" content="Hello PWA">
+        <link rel="apple-touch-icon" href="icon_512.png">
+
+        <!-- Mobile Viewing -->
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <!-- More PWA Config-->
+        <meta name="description" content="A starter project for progressive web apps.">
+        <meta name="theme-color" content="#2F3BA2" />
+
+        <script>
+            // Register a service worker
+            if ('serviceWorker' in navigator) {
+                window.addEventListener('load', () => {
+                    navigator.serviceWorker.register('./service-worker.js')
+                    .then((reg) => {
+                        console.log('Service worker registered.', reg);
+                    });
+                });
+            }
+        </script>
+
+        <link rel="stylesheet" href="styles.css">
+    </head>
+    <body>
+        <header>
+            <h1>Dave's Tic Tac Toe (offline)</h1>
+        </header>
+        <main class="gameboard">
+            <strong class="message" aria-live="polite"></strong>
+           
+            <div class="cell-wrapper">
+                <button class="cell" data-x-coordinate="0" data-y-coordinate="0" data-index="0" title="Cell 0 0 Empty"></button>
+                <button class="cell" data-x-coordinate="1" data-y-coordinate="0" data-index="1" title="Cell 1 0 Empty"></button>
+                <button class="cell" data-x-coordinate="2" data-y-coordinate="0" data-index="2" title="Cell 2 0 Empty"></button>
+
+                <button class="cell" data-x-coordinate="0" data-y-coordinate="1" data-index="3" title="Cell 0 1 Empty"></button>
+                <button class="cell" data-x-coordinate="1" data-y-coordinate="1" data-index="4" title="Cell 1 1 Empty"></button>
+                <button class="cell" data-x-coordinate="2" data-y-coordinate="1" data-index="5" title="Cell 2 1 Empty"></button>
+                
+                <button class="cell" data-x-coordinate="0" data-y-coordinate="2" data-index="6" title="Cell 0 2 Empty"></button>
+                <button class="cell" data-x-coordinate="1" data-y-coordinate="2" data-index="7" title="Cell 1 2 Empty"></button>
+                <button class="cell" data-x-coordinate="2" data-y-coordinate="2" data-index="8" title="Cell 2 2 Empty"></button>
+            </div>
+
+            <button class="reset">New Game</button>
+        </main>
+
+        <script type="module">
+            import TicTacToe from './TicTacToe.js'
+            
+            let game = new TicTacToe({
+                cells: document.querySelectorAll('.cell'),
+                message: document.querySelector('.message'),
+                reset: document.querySelector('.reset')
+            })
+        </script>
+    </body>
+</html>
